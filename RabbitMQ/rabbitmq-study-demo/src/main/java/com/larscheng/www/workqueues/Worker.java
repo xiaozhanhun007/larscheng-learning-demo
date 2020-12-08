@@ -23,7 +23,10 @@ public class Worker {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setPassword("songrui1234");// 改成对应的密码
+        factory.setUsername("songrui"); // 改成对应的密码
+        factory.setHost("localhost"); // 改成对应的网址
+
         //创建链接、频道
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
