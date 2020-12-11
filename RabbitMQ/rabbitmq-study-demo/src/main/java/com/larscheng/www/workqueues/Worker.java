@@ -19,13 +19,22 @@ import java.util.concurrent.TimeoutException;
  */
 @Slf4j
 public class Worker {
-    private final static String TASK_QUEUE_NAME = "TASK_QUEUE";
+    private final static String TASK_QUEUE_NAME = "commodity.shipper";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setPassword("songrui1234");// 改成对应的密码
-        factory.setUsername("songrui"); // 改成对应的密码
-        factory.setHost("localhost"); // 改成对应的网址
+        // 改成对应的密码
+        factory.setPassword("/////");
+        // 改成对应的username
+        factory.setUsername("admin");
+        // 改成对应的网址
+        factory.setHost("172.16.20.104");
+        // 改成对应的virtualhost
+        factory.setVirtualHost("/////");
+        // 改成对应的端口
+        factory.setPort(56720);
+
+
 
         //创建链接、频道
         Connection connection = factory.newConnection();
@@ -36,12 +45,23 @@ public class Worker {
         channel.basicQos(1);
         System.out.println("接收消息中........");
 
-        DeliverCallback deliverCallback = (consumerTag,delivery) ->{
-            String msg = new String(delivery.getBody(),"UTF-8");
-            log.info("工作者：{} 从队列：{} 中收到消息：{}",Thread.currentThread().getName(),TASK_QUEUE_NAME,msg);
+        //  callBack
+        DeliverCallback deliverCallback =  getDeliverCallback(channel);
+
+        //true 为自动应答，会存在丢失消息的情况
+        boolean autoAck = false;
+        //指定消费队列
+        channel.basicConsume(TASK_QUEUE_NAME,autoAck,deliverCallback,consumerTag->{});
+    }
+
+
+    public static DeliverCallback getDeliverCallback(Channel channel) {
+        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+            String msg = new String(delivery.getBody(), "UTF-8");
+            log.info("工作者：{} 从队列：{} 中收到消息：{}", Thread.currentThread().getName(), TASK_QUEUE_NAME, msg);
             Long start = System.currentTimeMillis();
-            for (char s : msg.toCharArray()){
-                if (s=='.') {
+            for (char s : msg.toCharArray()) {
+                if (s == '.') {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -49,14 +69,10 @@ public class Worker {
                     }
                 }
             }
-            log.info("工作者：{} 本次任务处理完成,耗时：{}ms",Thread.currentThread().getName(),System.currentTimeMillis()-start);
+            log.info("工作者：{} 本次任务处理完成,耗时：{}ms", Thread.currentThread().getName(), System.currentTimeMillis() - start);
             //手动确认
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         };
-
-        //true 为自动应答，会存在丢失消息的情况
-        boolean autoAck = false;
-        //指定消费队列
-        channel.basicConsume(TASK_QUEUE_NAME,autoAck,deliverCallback,consumerTag->{});
+        return deliverCallback;
     }
 }

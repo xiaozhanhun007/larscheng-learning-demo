@@ -24,6 +24,11 @@ public class ReceiveTopic {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
+        // 改成对应的密码
+        factory.setPassword("songrui1234");
+        // 改成对应的登录名
+        factory.setUsername("songrui");
+        // 改成对应的网址
         factory.setHost("localhost");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
@@ -31,7 +36,7 @@ public class ReceiveTopic {
         channel.exchangeDeclare(EXCHANGE_NAME, "topic");
         //创建一个非持久的、唯一的且自动删除的队列
         String queueName = channel.queueDeclare().getQueue();
-        String routingKey = TOPIC[0];
+        String routingKey = TOPIC[2];
         System.out.println(queueName + ".........等待【" + routingKey + "】消息");
         //为转发器指定队列，设置binding，设置binding_key
 

@@ -24,6 +24,11 @@ public class SendTopic {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
+        // 改成对应的密码
+        factory.setPassword("songrui1234");
+        // 改成对应的登录名
+        factory.setUsername("songrui");
+        // 改成对应的网址
         factory.setHost("localhost");
         try (
                 //创建链接、频道

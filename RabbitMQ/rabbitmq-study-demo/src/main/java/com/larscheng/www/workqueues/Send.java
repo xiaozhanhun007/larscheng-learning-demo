@@ -16,9 +16,12 @@ public class Send {
 
     public static void main(String[] args) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setPassword("songrui1234");// 改成对应的密码
-        factory.setUsername("songrui"); // 改成对应的密码
-        factory.setHost("localhost"); // 改成对应的网址
+        // 改成对应的密码
+        factory.setPassword("songrui1234");
+        // 改成对应的登录名
+        factory.setUsername("songrui");
+        // 改成对应的网址
+        factory.setHost("localhost");
 
         try (
                 //创建链接、频道
