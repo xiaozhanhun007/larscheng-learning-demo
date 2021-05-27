@@ -23,15 +23,14 @@ public class Worker {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
+
         // 改成对应的密码
-        factory.setPassword("/////");
-        // 改成对应的username
-        factory.setUsername("admin");
+        factory.setPassword("D8lHKTCIxkB9Y6HKTCIxkB9kB9YMQ");
+        // 改成对应的登录名
+        factory.setUsername("rabbitmq");
         // 改成对应的网址
-        factory.setHost("172.16.20.104");
-        // 改成对应的virtualhost
-        factory.setVirtualHost("/////");
-        // 改成对应的端口
+        factory.setVirtualHost("commodity");
+        factory.setHost("rabbitmq.91czt.com");
         factory.setPort(56720);
 
 
